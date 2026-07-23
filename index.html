@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Point — Panel Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0a1a2f; --navy2:#0f2138; --navy3:#16304e; --line:#20456e;
+    --gold:#f0b429; --teal:#22a39f; --green:#2bb673; --coral:#e8896b;
+    --ink:#eef4fb; --mute:#93a9c2; --mute2:#6c85a1;
+    --disp:'Space Grotesk',ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    --body:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:radial-gradient(1200px 600px at 80% -10%, #12294a 0%, var(--navy) 55%) fixed;
+    color:var(--ink);font-family:var(--body);line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:60px;}
+  a{color:var(--gold)}
+  .wrap{max-width:840px;margin:0 auto;padding:0 16px}
+  header{position:sticky;top:0;z-index:20;background:rgba(10,26,47,.93);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .hd{display:flex;align-items:baseline;gap:12px;padding:14px 16px 10px;max-width:840px;margin:0 auto;flex-wrap:wrap}
+  .brand{font-family:var(--disp);font-weight:700;font-size:19px}
+  .brand b{color:var(--gold)}
+  .when{font-size:12px;color:var(--mute);font-weight:500}
+  .tabs{display:flex;gap:6px;max-width:840px;margin:0 auto;padding:0 12px 10px;overflow-x:auto}
+  .tab{flex:0 0 auto;font-family:var(--disp);font-weight:600;font-size:13.5px;color:var(--mute);background:transparent;border:1px solid transparent;border-radius:999px;padding:7px 15px;cursor:pointer;white-space:nowrap;transition:.15s}
+  .tab:hover{color:var(--ink)}
+  .tab.on{color:var(--navy);background:var(--gold);border-color:var(--gold)}
+  .panel{display:none;padding-top:18px}
+  .panel.on{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  h2.sec{font-family:var(--disp);font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin:26px 0 12px;font-weight:600}
+  h2.sec:first-child{margin-top:4px}
+  .sub{color:var(--mute);font-size:13px;margin:-6px 0 16px}
+  .dayline{font-family:var(--disp);font-weight:600;font-size:13px;color:var(--mute);letter-spacing:.5px;margin:2px 0 14px}
+  .dayline b{color:var(--gold)}
+  .rules{background:linear-gradient(180deg,#123a44,#0e2f37);border:1px solid #1c5259;border-radius:12px;padding:6px 16px 12px;margin:0 0 18px}
+  .rules summary{font-family:var(--disp);font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);font-weight:700;cursor:pointer;padding:9px 0 5px;list-style:none}
+  .rules summary::-webkit-details-marker{display:none}
+  .rules summary::before{content:'\25B8 ';color:var(--teal)}
+  .rules[open] summary::before{content:'\25BE '}
+  .rules ul{margin:2px 0 4px;padding-left:18px}
+  .rules li{margin:5px 0;font-size:13.5px;color:#cfeeeb}
+  .rules b{color:#fff}
+  .ivcard{background:var(--navy2);border:1px solid var(--line);border-radius:14px;margin-bottom:14px;overflow:hidden}
+  .ivtop{display:flex;align-items:center;gap:13px;padding:15px 16px;cursor:pointer;user-select:none}
+  .ivtime{font-family:var(--disp);font-weight:700;font-size:13px;color:var(--navy);background:var(--gold);border-radius:8px;padding:6px 9px;flex:0 0 auto;min-width:54px;text-align:center}
+  .ivwho{flex:1;min-width:0}
+  .ivname{font-family:var(--disp);font-weight:700;font-size:17px;line-height:1.2}
+  .ivrole{color:var(--mute);font-size:12.5px;margin-top:2px}
+  .ivloc{color:var(--mute2);font-size:11.5px;margin-top:2px}
+  .ivloc::before{content:'\1F4CD  '}
+  .chev{color:var(--mute);font-size:13px;transition:.2s;flex:0 0 auto}
+  .ivcard.open .chev{transform:rotate(90deg);color:var(--gold)}
+  .ivbody{display:none;padding:2px 16px 18px;border-top:1px solid var(--line)}
+  .ivcard.open .ivbody{display:block}
+  .ivcard.priority{border-color:#3c5f2e;box-shadow:inset 0 0 0 1px rgba(43,182,115,.15)}
+  .prtag{display:inline-block;font-family:var(--disp);font-weight:700;font-size:9.5px;letter-spacing:.8px;color:var(--green);border:1px solid rgba(43,182,115,.5);border-radius:5px;padding:2px 6px;margin-left:8px;vertical-align:middle}
+  .ivsec{margin:15px 0}
+  .ivlbl{font-family:var(--disp);font-size:10.5px;letter-spacing:1.1px;text-transform:uppercase;color:var(--mute);font-weight:700;margin-bottom:7px}
+  .ivtext{font-size:14px;color:var(--ink)}
+  .ivtext b{color:#fff}
+  .means{background:linear-gradient(180deg,#2a2410,#241f0c);border:1px solid #4a3c12;border-left:3px solid var(--gold);border-radius:10px;padding:12px 14px}
+  .means .ivlbl{color:var(--gold)}
+  .means .ivtext{font-size:13.5px;color:#fff4dd}
+  .digs{margin:0;padding-left:19px}
+  .digs li{margin:5px 0;font-size:13.5px;color:var(--mute)}
+  .digs b{color:var(--ink)}
+  .schips{display:flex;flex-direction:column;gap:7px}
+  .schip{display:flex;align-items:center;gap:9px;background:var(--navy);border:1px solid var(--line);border-radius:9px;padding:9px 11px;cursor:pointer;transition:.15s;text-align:left;width:100%;color:var(--ink);font-family:inherit}
+  .schip:hover{border-color:var(--gold)}
+  .schip .st{font-family:var(--disp);font-weight:700;font-size:9.5px;letter-spacing:.5px;padding:2px 6px;border-radius:5px;flex:0 0 auto}
+  .schip .st.story{background:rgba(240,180,41,.16);color:var(--gold)}
+  .schip .st.appr{background:rgba(34,163,159,.16);color:var(--teal)}
+  .schip .slabel{flex:1;font-size:13.5px;font-weight:600}
+  .schip .sq{color:var(--mute2);font-size:11px;display:block;font-weight:400;margin-top:1px}
+  .schip .go{color:var(--mute);font-size:13px}
+  .inroom{background:rgba(43,182,115,.08);border:1px solid rgba(43,182,115,.3);border-radius:10px;padding:12px 14px}
+  .inroom .ivlbl{color:var(--green)}
+  .inroom ol{margin:0 0 8px;padding-left:19px}
+  .inroom li{margin:5px 0;font-size:13.5px}
+  .inroom li b{color:#fff}
+  .deliv{font-size:12.5px;color:#bfe6cf;border-top:1px dashed rgba(43,182,115,.3);padding-top:8px;margin-top:4px;font-style:italic}
+  .card{background:var(--navy2);border:1px solid var(--line);border-radius:14px;margin-bottom:12px;overflow:hidden;scroll-margin-top:90px}
+  .card.flash{animation:flash 1.2s ease}
+  @keyframes flash{0%,100%{box-shadow:none}30%{box-shadow:0 0 0 2px var(--gold)}}
+  .ctop{display:flex;align-items:flex-start;gap:12px;padding:15px 16px;cursor:pointer;user-select:none}
+  .cnum{font-family:var(--disp);font-weight:700;font-size:13px;color:var(--navy);background:var(--gold);width:26px;height:26px;border-radius:7px;display:grid;place-items:center;flex:0 0 26px;margin-top:1px}
+  .appr .cnum{background:var(--teal);color:#02201f}
+  .cmain{flex:1;min-width:0}
+  .ctitle{font-family:var(--disp);font-weight:600;font-size:16px;line-height:1.25}
+  .cproves{color:var(--mute);font-size:12.5px;margin-top:3px}
+  .cserves{margin-top:7px}
+  .svc{display:inline-block;font-size:10.5px;font-weight:600;color:var(--mute);border:1px solid var(--line);border-radius:5px;padding:1px 6px;margin:0 5px 5px 0;font-family:var(--disp)}
+  .card.open .chev{transform:rotate(90deg);color:var(--gold)}
+  .cbody{display:none;padding:0 16px 16px;border-top:1px solid var(--line)}
+  .card.open .cbody{display:block}
+  .spine{background:linear-gradient(180deg,#2a2410,#241f0c);border:1px solid #4a3c12;border-left:3px solid var(--gold);border-radius:10px;padding:12px 14px;margin:14px 0}
+  .spine .lbl{font-family:var(--disp);font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:5px}
+  .spine .tx{font-size:15px;font-weight:600;color:#fff8e8;line-height:1.4}
+  .blk{margin:13px 0}
+  .blk .lbl{font-family:var(--disp);font-size:10.5px;letter-spacing:1.1px;text-transform:uppercase;color:var(--mute);font-weight:700;margin-bottom:7px}
+  ol.beats,ul.elems{margin:0;padding-left:20px}
+  ol.beats li,ul.elems li{margin:6px 0;font-size:14px}
+  ol.beats li::marker{color:var(--gold);font-weight:700}
+  ul.elems li::marker{color:var(--teal)}
+  .beats b,.elems b,.proof b{color:#fff}
+  .bridge{background:rgba(34,163,159,.1);border:1px solid rgba(34,163,159,.35);border-radius:10px;padding:11px 13px;margin:13px 0}
+  .bridge .lbl{font-family:var(--disp);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:4px}
+  .bridge .tx{font-size:13.5px;color:#d6f2f0;font-style:italic}
+  .proof{font-size:13px;color:var(--mute);margin:11px 0}
+  .notes{background:var(--navy);border:1px dashed var(--line);border-radius:10px;padding:10px 13px;margin-top:13px}
+  .notes .lbl{font-family:var(--disp);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--coral);font-weight:700;margin-bottom:5px}
+  .notes .tx{font-size:12.5px;color:#d6c3b8;line-height:1.5}
+  .hook{background:linear-gradient(180deg,#2a2410,#241f0c);border:1px solid #4a3c12;border-radius:10px;padding:11px 14px;margin:14px 0;text-align:center}
+  .hook .lbl{font-family:var(--disp);font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px}
+  .hook .tx{font-family:var(--disp);font-size:17px;font-weight:700;color:#fff8e8}
+  .expandall{background:transparent;border:1px solid var(--line);color:var(--mute);font-family:var(--disp);font-weight:600;font-size:12px;border-radius:8px;padding:6px 12px;cursor:pointer;margin-bottom:4px}
+  .expandall:hover{color:var(--ink);border-color:var(--gold)}
+  .ncard{background:var(--navy2);border:1px solid var(--line);border-radius:14px;padding:15px 16px;margin-bottom:12px}
+  .ndate{font-family:var(--disp);font-weight:600;font-size:11px;letter-spacing:.5px;color:var(--gold);text-transform:uppercase}
+  .ntitle{font-family:var(--disp);font-weight:600;font-size:16.5px;margin:5px 0 8px;line-height:1.25}
+  .nsum{font-size:13.5px;color:var(--ink)}
+  .nuse{background:rgba(43,182,115,.08);border:1px solid rgba(43,182,115,.3);border-radius:9px;padding:9px 12px;margin-top:11px;font-size:13px}
+  .nuse b{color:var(--green);font-family:var(--disp);font-size:10px;letter-spacing:.8px;text-transform:uppercase;display:block;margin-bottom:3px}
+  .nlink{display:inline-block;margin-top:9px;font-size:12.5px;font-family:var(--disp);font-weight:600}
+  .nlink::after{content:' \2197'}
+  .mockpick{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 18px}
+  .mp{font-family:var(--disp);font-weight:600;font-size:13px;background:var(--navy2);border:1px solid var(--line);color:var(--ink);border-radius:9px;padding:9px 14px;cursor:pointer}
+  .mp:hover{border-color:var(--gold)}
+  .mp.on{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+  .stage{background:var(--navy2);border:1px solid var(--line);border-radius:14px;padding:20px 18px;min-height:150px}
+  .mq{font-size:17px;font-weight:600;font-family:var(--disp);line-height:1.35}
+  .mfrom{color:var(--mute);font-size:12.5px;margin-bottom:12px;font-family:var(--disp);font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+  .timer{font-family:var(--disp);font-weight:700;font-size:34px;color:var(--gold);margin:16px 0 4px;letter-spacing:1px}
+  .timer.warn{color:var(--coral)}
+  .mrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+  .mbtn{font-family:var(--disp);font-weight:600;font-size:13.5px;border-radius:9px;padding:10px 16px;cursor:pointer;border:1px solid var(--line);background:var(--navy);color:var(--ink)}
+  .mbtn.primary{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+  .mbtn:hover{border-color:var(--gold)}
+  .reveal{margin-top:16px;display:none}
+  .reveal.on{display:block}
+  .empty{color:var(--mute);font-size:14px}
+  footer{color:var(--mute2);font-size:11.5px;text-align:center;margin:34px 0 10px}
+</style>
+</head>
+<body>
+<header>
+  <div class="hd">
+    <div class="brand">Point · <b>Panel Prep</b></div>
+    <div class="when">Mon Jul 27 · 4×30m + debrief</div>
+  </div>
+  <div class="tabs" id="tabs">
+    <button class="tab on" data-t="interviews">Interviews</button>
+    <button class="tab" data-t="stories">Stories</button>
+    <button class="tab" data-t="news">News</button>
+    <button class="tab" data-t="mock">Mock</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="panel on" id="interviews">
+    <div class="dayline">Monday, July 27 &mdash; <b>your order</b>, back to back</div>
+    <details class="rules">
+      <summary>Delivery rules &mdash; read before you walk in</summary>
+      <ul>
+        <li><b>Spine is the rail.</b> Memorize one line per story; be conversational around it.</li>
+        <li><b>Bank branches out loud.</b> "There's an angle there too &mdash; happy to go deeper" &rarr; then return to the spine.</li>
+        <li><b>Pause replaces filler.</b> A beat reads as considered; "you know" reads as searching.</li>
+        <li><b>One bridge, then stop.</b> Say the tie to Point and let the silence sit.</li>
+        <li><b>Fuzzy numbers:</b> lead with the ratio you're sure of (doubled &middot; &minus;15%&rarr;+25% &middot; 93%). Hold the ballpark in reserve.</li>
+      </ul>
+    </details>
+    <div id="ivBody"></div>
+  </section>
+
+  <section class="panel" id="stories">
+    <h2 class="sec">Stories to tell cold</h2>
+    <div class="sub">The eight real narratives. Drill these &mdash; spine + beats + bridge.</div>
+    <button class="expandall" data-scope="storyBody">Expand all</button>
+    <div id="storyBody"></div>
+    <h2 class="sec">Approach answers</h2>
+    <div class="sub">"How do you&hellip;" questions. Lead with the hook, hit the elements, one proof.</div>
+    <button class="expandall" data-scope="apprBody">Expand all</button>
+    <div id="apprBody"></div>
+  </section>
+
+  <section class="panel" id="news">
+    <h2 class="sec">Point news &mdash; know it, use it</h2>
+    <div class="sub">The growth-mandate context behind this hire. Each has a "how to use it" line.</div>
+    <div id="newsBody"></div>
+  </section>
+
+  <section class="panel" id="mock">
+    <h2 class="sec">Mock drill</h2>
+    <div class="sub">Pick an interviewer. Question first, 90-sec timer, then reveal to self-check.</div>
+    <div class="mockpick" id="mockPick"></div>
+    <div class="stage" id="mockStage"><div class="empty">Pick an interviewer above to start.</div></div>
+  </section>
+</div>
+
+<footer>Personal interview prep &mdash; Ross Yader &middot; keep the plain-text backup too.</footer>
+
+<script>
+const stories = [
+  {id:'s_dash', n:1, title:'OpenStore attribution dashboard', serves:['Ranjeet R1','Denise D1 & D4','Siarra S1'],
+   proves:'Unique perspective that changed the outcome \u2014 the affiliate voice in a cross-functional attribution rebuild; incrementality over last-click.',
+   spine:'At OpenStore I was the affiliate seat in a company-wide attribution rebuild \u2014 I could decode what our publishers actually did across the funnel when analytics only saw IDs \u2014 then built the publisher-level dashboard that repriced payouts by true incremental value, not last-click.',
+   beats:['<b>How it started (collaborative):</b> our head of data & analytics pulled every channel manager together to build one source of truth \u2014 agree the attribution method and where to pull data. I was the affiliate voice at that table.','<b>My unique lens \u2014 decode the funnel:</b> affiliate isn\u2019t one thing. Some publishers are bottom-funnel / last-click (coupon), some are top-funnel content driving brand-new users, some are mid-funnel retargeting and email. Analytics could see publisher IDs but not what they meant \u2014 I could read the sub-IDs and say who actually drove new traffic vs. who just caught the last click.','<b>What we aligned on (team):</b> we moved off last-click to <b>session-based attribution in GA4</b> \u2014 credit whoever drove the converting session \u2014 because you can\u2019t trust the affiliate platform\u2019s own credit (it claims any click that converts within ~30 days). For the unattributed bucket, we reallocated revenue to each channel by its share of tracked volume (affiliate ~10% of volume \u2192 ~10% of the unattributed).','<b>My build + outcome:</b> on top of that I built the affiliate dashboard connecting platform data to our internal attribution at the <b>publisher level</b> \u2014 active publishers, each one\u2019s <b>incrementality score</b> (what share of their platform-credited orders they actually drove), and I used it to reprice: coupon tiers down (we\u2019d been paying full rate for sales we\u2019d have gotten anyway), content and genuine incremental partners up. <b>Margin to 33%, $5M+ by year two.</b>'],
+   bridge:'That\u2019s exactly what your exercise tested \u2014 separating incremental value from last-click. And it\u2019s how I\u2019d work with Ranjeet\u2019s first-party team: bring the affiliate lens into a shared attribution model, not fight over the credit.',
+   notes:'Two gears. Lead with beats 1\u20132 + the outcome (4) \u2014 that\u2019s the R1 answer: your unique perspective (reading sub-IDs no one else could) changed the model. Offer the methodology (beat 3: session-based GA4 vs. the platform\u2019s 30-day last-click, plus the reallocation logic) only if Shoji or Ranjeet dig \u2014 it\u2019s your depth, don\u2019t front-load it. Credit the head of data & analytics + the other channel managers so it reads as collaboration, not solo genius.'},
+  {id:'s_double', n:2, title:'Impact levers \u2192 doubled the channel', serves:['Shoji Sh1'],
+   proves:'Strategically leveraged the platform to drive growth; deep Impact fluency.',
+   spine:'I migrated Yelp\u2019s program to Impact and used its advanced levers to pay publishers in line with value \u2014 and roughly doubled the channel, $150K to $300K a month.',
+   beats:['2-year-old program on Commission Junction \u2192 I scoped, pitched, migrated to Impact.','Three levers, one philosophy (pay for value): <b>four conversion points</b> for event-based payouts (a small payout on free signup opened up publishers a paid-only model couldn\u2019t support); <b>first-touch crediting</b> for content publishers; <b>reconciled Impact against internal data</b>.','Roughly <b>doubled \u2014 ~$150K\u2192$300K/month</b> in a few months.'],
+   bridge:'Deep on Everflow at Credit.com since, so I\u2019m current on both platforms you\u2019d use \u2014 no ramp.',
+   notes:'Lead with the doubling. Three levers, one line each \u2014 don\u2019t feature-tour; frame all three as \u201cpaying publishers in line with value.\u201d Say \u201croughly doubled, ~$150K\u2192$300K\u201d; hold advertiser counts for a follow-up.'},
+  {id:'s_migr', n:3, title:'CJ \u2192 Impact migration', serves:['Shoji Sh3'],
+   proves:'Complex reporting/timelines across cross-functional stakeholders when affiliate is one of many priorities.',
+   spine:'I led Yelp\u2019s migration from Commission Junction to Impact across product, engineering, and business operations \u2014 holding a multi-month timeline through COVID, while affiliate was nowhere near the company\u2019s top priority.',
+   beats:['Scoped Impact + proved the business case \u2192 paused ~3 months when COVID hit \u2192 restarted in July, drove it to done by December.','Leaned on <b>product + engineering</b>; kept them looped on the timeline so they could weave it into their competing priorities.','Worked with <b>business operations</b> (owned reporting/dashboards) to make sure Impact traffic tracked properly to the performance team and to affiliate specifically.','Ran it on <b>Jira</b> to keep everyone aligned.'],
+   bridge:'That\u2019s affiliate inside a bigger growth org \u2014 always one of several priorities competing for product and data time. I\u2019m used to earning the roadmap slots and keeping stakeholders aligned to a date.',
+   notes:'Don\u2019t re-tell the levers/doubling (that\u2019s Sh1) \u2014 this is the project-leadership story. Close on the outcome line: \u201cdelivered across four stakeholder groups, on timeline, in peak COVID \u2014 the foundation the channel scaled on.\u201d Don\u2019t open with the 8-month duration.'},
+  {id:'s_cc', n:4, title:'AI Command Center', serves:['Shoji Sh2','Denise D2'],
+   proves:'Capabilities for scaling performance + operational efficiency.',
+   spine:'At Credit.com I built an AI Command Center as the single source of truth for the channel \u2014 it cut my reporting time by an hour-plus a day and doubled as a growth cockpit.',
+   beats:['Problem: reporting sprawl \u2014 weekly finance meeting, a longer weekly growth-team meeting, one-offs \u2014 all needing affiliate numbers, projections, publisher insights, wins.','Built it to pull everything into one view (Google Sheets + platform data); grab pacing and last week\u2019s wins on demand.','Shared it with <b>Blakely</b>, my direct report \u2014 either of us pulls what we need for shared decks. <i>(drops in: I\u2019ve managed a report)</i>','Saved each of us <b>30+ min/day</b>; one trusted view for my head of growth. And it drove growth too \u2014 the pipeline, new-partner queue, and \u201cfastest levers\u201d views showed where to act next.'],
+   bridge:'Point runs a high-spend channel with finance and leadership watching closely \u2014 this is the operating system that keeps affiliate legible and shows where the next lever is. I\u2019d build it in the first weeks.',
+   notes:'Lead with efficiency (hour+/day, one source of truth), then one line that it drove growth. Park-its if he digs: \u201ctracked performance vs. finance targets, scorecards, compliance flags, projections, fastest levers next 10 days\u201d; \u201calso built a separate testing tool to drive performance.\u201d'},
+  {id:'s_rev', n:5, title:'Rev-share \u2192 93% (the one that got away)', serves:['Shoji Sh4'],
+   proves:'Unconventional tactic; risk vs. opportunity; a hard-won, senior lesson.',
+   spine:'I introduced rev-share into a flat-payout publisher program to align incentives \u2014 and learned the hard way never to hand a partner a lever with no floor.',
+   beats:['Tactic: inherited a flat-payout program, introduced <b>revenue-share</b> (unconventional then).','Opportunity: guaranteed positive margin per lead + a real partnership.','Risk I underweighted: once I shared the rev-share %, it became a lever my top partner could ratchet \u2014 \u201cyour competitor pays 85\u201d \u2014 no floor. Chasing volume, I kept giving \u2192 <b>93% of revenue against a 30\u201340% margin target.</b>','He eventually had the volume to go direct and cut us out. Lost our #1 partner and a strategic advantage.','Lesson: build trust through shared goals + data, but never hand a partner a lever with no floor. Saw it done right at Yelp \u2014 <b>ROKT held a firm 50/50</b> and asserted their value.'],
+   bridge:'Live for you \u2014 you\u2019re on flat CPL today, and rev-share on Impact is the compliant version. I\u2019ve run both sides.',
+   notes:'Name the tactic as the headline \u2014 don\u2019t open with the boss/transparency backstory. PAUSE before \u201c93%.\u201d Don\u2019t soften after the number \u2014 go straight to the lesson. Compress the economics to one line.'},
+  {id:'s_xchan', n:6, title:'Cross-channel journey / Impact Optimize', serves:['Denise D3'],
+   proves:'Collaboration with peers that improved outcomes; deep Impact fluency.',
+   spine:'I used Impact\u2019s cross-channel reports to show our paid search and social team the real customer journey \u2014 including publishers getting affiliate credit who\u2019d actually been introduced by paid search first.',
+   beats:['At Yelp I sat on the performance team with <b>Nick</b> (paid search/social) and the Meta buyers.','Using Impact\u2019s <b>Optimize reports (Top Paths / Contribution)</b>, I could see the full path \u2014 whether affiliate was first, or paid search introduced the customer before an affiliate got last-click.','Brought those findings back to Nick and the buyers \u2014 a view of what customers saw before their channel got credit, so nobody was flying on last-click alone.','Honest next step: the lever to act on it is <b>Credit Groups</b> \u2014 suppress a publisher\u2019s payout when paid search already touched. I\u2019d built the case; left before implementing, but I know exactly how.'],
+   bridge:'That\u2019s how I\u2019d work with Ranjeet\u2019s team \u2014 bring the cross-channel view back so paid isn\u2019t reading last-click, and dedupe payouts with credit groups. Same Impact toolset you run \u2014 no ramp.',
+   notes:'Honest framing: a finding you surfaced + shared + the lever you\u2019d pull, not a fabricated win. Outcome is directional \u2014 \u201cgave the paid team a truer read of the journey and teed up a payout-dedupe.\u201d Park-it (TM+): \u201cImpact\u2019s Paid Search Monitoring flags affiliates bidding on our trademark so we\u2019re not paying twice.\u201d'},
+  {id:'s_gate', n:7, title:'Creative gating \u2014 brief it, gate it, mine it', serves:['Siarra S2'],
+   proves:'Aligning affiliate messaging/creative with brand tone + compliance.',
+   spine:'I keep affiliate creative on-brand by gating it \u2014 affiliates can only use approved assets pulled from the platform \u2014 but I also treat top partners as a two-way source of what to test.',
+   beats:['Starts internally: work with <b>creative + brand teams</b> on clear guidelines \u2014 brand guidelines (voice + compliance) + a creative style guide.','Gate the creative: load approved assets + specs into the platform (<b>Everflow</b> at Credit.com, <b>Impact</b> at Yelp); affiliates can only pull authorized creative, locked by contract.','Two-way street: top partners are sharp marketers. <b>Credit Sesame</b> (our #1 at Credit.com) sent millions of emails on our behalf with a team testing subject lines and creative \u2014 they\u2019d feed back what resonated. I gate for brand/compliance, but mine partners like that for what to test.'],
+   bridge:'At Point that matters double \u2014 home equity is regulated, so messaging has to be on-brand and compliant. I\u2019d run the same gate, and use top publishers as a live read on what\u2019s winning in the category.',
+   notes:'Lead with the gating (that\u2019s the answer). The two-way street is the \u201c\u2026and here\u2019s the nuance\u201d beat, not the main event. Hook to remember: \u201cbrief it, gate it, mine it.\u201d'},
+  {id:'s_cathy', n:8, title:'Cathy / Amex \u2014 peer disagreement', serves:['Siarra S3'],
+   proves:'Peer disagreement on a campaign, worked through together; performance rigor + brand judgment.',
+   spine:'My first brand role, I clashed with a BD peer over an Amex partnership \u2014 I saw a measurement problem, she saw brand value \u2014 and we landed on a structure that honored both.',
+   beats:['Joined Yelp to build affiliate <i>and</i> pick up some of BD\u2019s marketing partnerships. <b>Cathy</b> (BD / strategic partnerships) was my peer.','The disagreement: BD was gung-ho on the Amex deal; from a performance lens I was concerned \u2014 a card-linked offer paying <b>10% of revenue on customers who\u2019d have signed up anyway</b> (Amex saw Yelp spend on the card statement and billed us 10%).','Worked it through <i>together</i>: Cathy showed me the <b>brand side</b> I was undervaluing \u2014 the Amex association, our exact affluent-business-owner audience. I took it seriously. Then I brought the <b>performance fix</b>: limit the deal to <b>new advertisers only</b>, with monthly reporting via business ops to verify they became paying advertisers before we paid.','Got her buy-in \u2014 combined her strategic/brand lens with my data rigor. Outcome: stopped paying 10% on customers who\u2019d have transacted anyway \u2014 turned a leaky brand deal into an incremental one.'],
+   bridge:'That\u2019s how I work a disagreement \u2014 I don\u2019t win it, I find the version where both lenses are right. Especially with content and brand, where the best answer is performance discipline plus brand judgment.',
+   notes:'Frame it as Cathy (peer), not Peter. This is THE Amex story \u2014 tell it once, here (not R1/D4). Outcome is cost-avoided (incremental, not leaky) \u2014 no growth number needed.'}
+];
+const approaches = [
+  {id:'a_ai', q:'What are you currently learning to stay ahead?', who:'Ranjeet R2',
+   hook:'\u201cBuild it, don\u2019t just watch it.\u201d',
+   elements:['<b>Discovery</b> \u2014 I track how affiliates show up in AI answers / LLM citations.','<b>Recruitment + value</b> \u2014 use citations as a recruitment list (who\u2019s cited for relevant topics) and share-of-voice data (Profound) to value those placements.','<b>Incrementality</b> \u2014 the measurement edge that doesn\u2019t age.'],
+   proof:'AEO recruitment list + Profound share-of-voice.',
+   bridge:'Direct for Point \u2014 find who\u2019s cited in AI answers for home-equity questions, recruit them, value the placements. Most affiliate managers aren\u2019t running this yet.'},
+  {id:'a_coh', q:'How do you contribute to cohesion, especially remote?', who:'Ranjeet R3',
+   hook:'\u201cThe human element doesn\u2019t happen by accident \u2014 you make it.\u201d',
+   elements:['<b>Make space</b> \u2014 recreate the water-cooler; casual, get to know people.','<b>Spot strain</b> \u2014 notice when someone\u2019s struggling and reach out early.','<b>Keep them in it</b> \u2014 give regular openings to share and stay energized.'],
+   proof:'Blakely, my direct report at Credit.com \u2014 made time to know her, gave her regular openings to share updates. (6.5 yrs remote.)',
+   bridge:'Point\u2019s fully remote \u2014 I\u2019ve spent six-plus years being the person who keeps a distributed team feeling like one.'},
+  {id:'a_dyn', q:'How do you contribute to a collaborative dynamic?', who:'Ranjeet R4',
+   hook:'\u201cPoint of view, proof, and the P&L.\u201d',
+   elements:['<b>POV</b> \u2014 show up with a point of view, not just a status.','<b>Proof</b> \u2014 bring tests, learnings, new/inactive publishers, campaigns.','<b>P&L</b> \u2014 own the affiliate number so the team can trust it. Ranjeet owns the overall growth number; my job is to know affiliate cold.'],
+   proof:'How I show up on the performance team.',
+   bridge:'In a growth org, the affiliate lead earns trust by owning their number and sharing openly.'},
+  {id:'a_align', q:'How do you ensure affiliate aligns with broader marketing?', who:'Denise D1',
+   hook:'\u201cSame scoreboard, same brief, watch the interplay.\u201d',
+   elements:['<b>Same scoreboard</b> \u2014 run off the shared growth number, not an affiliate-only one.','<b>Same brief</b> \u2014 get affiliate specs into the shared creative brief so affiliate rides the same promos and angles.','<b>Watch the interplay</b> \u2014 make sure affiliate adds incremental lift, not overlap.'],
+   proof:'The OpenStore attribution rebuild \u2014 getting affiliate onto the same shared source of truth as paid + data (story #1).',
+   bridge:'Affiliate reinforcing the same brand story as your first-party channels, not competing with them.'},
+  {id:'a_know', q:'Your approach to knowledge-sharing with peers?', who:'Denise D2',
+   hook:'\u201cShare the data, share the credit.\u201d',
+   elements:['<b>Open the data</b> \u2014 dashboards everyone can see (the Command Center).','<b>Involve early</b> \u2014 bring executors in and size the ask with them.','<b>Both ways</b> \u2014 take other channels\u2019 learnings into affiliate, offer mine back.'],
+   proof:'Command Center shared with Blakely + my head of growth. (See story #4.)',
+   bridge:'The person who makes the channel legible and the team sharper.'},
+  {id:'a_over', q:'How do you handle ambiguity or overlap in responsibilities?', who:'Denise D4',
+   hook:'\u201cName it, measure it, company-first.\u201d',
+   elements:['<b>Name it</b> \u2014 surface the overlap early instead of letting it fester.','<b>Measure it</b> \u2014 let incrementality/attribution settle who\u2019s driving value.','<b>Company-first</b> \u2014 default to the company number over channel credit.'],
+   proof:'The OpenStore dashboard finding \u2014 crediting the real incremental driver. (See story #1.)',
+   bridge:'Point\u2019s affiliate sits alongside first-party channels \u2014 I\u2019d rather measure the overlap than fight over credit.'},
+  {id:'a_pivot', q:'When do you pivot? What signals?', who:'Siarra S1',
+   hook:'\u201cMargin, incrementality, concentration.\u201d',
+   elements:['<b>Margin</b> \u2014 publisher-level margin turning.','<b>Incrementality</b> \u2014 decaying (paying for sales you\u2019d get anyway).','<b>Concentration</b> \u2014 a source over-concentrated or rotting. Then diagnose at the sub-ID level before cutting.'],
+   proof:'Credit.com turnaround \u2014 read the publisher-level P&L, then cut and restructured.',
+   bridge:'Same signals I\u2019d watch on your portfolio \u2014 and the same discipline to diagnose before I cut.'},
+  {id:'a_qual', q:'What qualities do you value in teammates?', who:'Siarra S4',
+   hook:'\u201cCompetent, thoughtful, collaborative, open.\u201d',
+   elements:['<b>Competent</b> \u2014 first thing I value; when everyone owns their piece well, the whole team gets easier.','<b>Thoughtful</b> \u2014 think it through before pulling others in; teach-a-man-to-fish.','<b>Collaborative + open</b> \u2014 especially remote: build transparently, share dashboards, give access to what you\u2019re building.'],
+   proof:'How I contribute: build the shared tools (Command Center), show up prepared with my agenda up front, respect people\u2019s time.',
+   bridge:'In a remote growth team, that openness is what keeps everyone rowing together.'}
+];
+const interviews = [
+  {key:'ranjeet', time:'10:00', name:'Ranjeet Edlabadkar', role:'Head of Growth Marketing (invite says Sr Director)', loc:'San Diego, CA \u00b7 Remote', priority:true,
+   bg:'At Point since 2024, leading the Growth Marketing team \u2014 all <b>first-party</b> media (paid search & social), lifecycle, and analytics. Before Point: VP / Head of Growth Marketing at <b>Personal Capital</b> (fintech, affluent-customer acquisition), Head of Marketing Investments at <b>Petco</b> ($100M+ budget, data science + CRM), VP at <b>LPL Financial</b>, and Group Marketing Manager at <b>Intuit</b>. <b>Chicago Booth MBA</b> + a Master\u2019s in Computer Science.',
+   means:'Deeply analytical (CS + Booth, data-science background, nine-figure budgets) and fintech-native \u2014 Personal Capital chased the same affluent audience Point wants. He owns <b>first-party</b>; you\u2019re <b>third-party</b>. He\u2019s screening for: will this person sharpen and complement my channels, or turf with them? Lead with rigor; show you make the whole team\u2019s spend smarter.',
+   digs:['A time you brought a <b>unique perspective</b> that changed an outcome','What you\u2019re <b>learning</b> to stay ahead in affiliate/performance','How you build <b>cohesion</b> on a remote team','How you contribute to a <b>collaborative dynamic</b>'],
+   refs:['s_dash','a_ai','a_coh','a_dyn'],
+   top:['You\u2019re an <b>operator who reads the P&L and incrementality</b> \u2014 his exact language.','You <b>complement first-party</b>, not compete \u2014 your cross-channel view makes paid smarter.','You\u2019re <b>AI-native</b> (AEO / LLM citations) \u2014 ahead of where most affiliate managers are.'],
+   deliv:'He\u2019s the most analytical person you\u2019ll meet \u2014 don\u2019t dumb the numbers down, and don\u2019t rush them. Precision + a pause reads as senior.'},
+  {key:'shoji', time:'10:30', name:'Shoji Ueki', role:'Chief Growth Officer', loc:'Los Angeles, CA', priority:true,
+   bg:'CGO at Point since Jan 2021, leading <b>marketing, sales, and data</b>. His career is a string of two-sided marketplaces: VP/Head of Marketing at <b>Grailed</b> (P2P menswear, acquired by GOAT), Sr Director Growth Marketing at <b>SeatGeek</b> (live-event ticketing), Head of Sales & Growth at <b>OrderAhead</b> (acquired by Square), and Director of User Growth at <b>Kiwi</b> (Sequoia-backed mobile gaming, acquired by Jam City). <b>Wharton MBA, CFA Charterholder.</b>',
+   means:'Shoji is a <b>marketplace + performance operator</b>, not a finance exec who wandered into growth. Every company matched supply and demand \u2014 exactly your world (QuinStreet lead marketplace, Yelp/ROKT). Your ROKT and QuinStreet framing will land hard. CFA + owns the data team = he respects rigor and <b>will check your numbers</b> \u2014 don\u2019t dumb it down. His round is literally the \u201cExercise Interview,\u201d so he\u2019s seen your deck.',
+   digs:['How you\u2019ve <b>leveraged Impact/Everflow</b> to drive growth','Capabilities most valuable for <b>scaling / operational efficiency</b>','Managing <b>complex reporting & timelines</b> across stakeholders','An <b>unconventional tactic</b> in a mature program \u2014 risk vs. opportunity'],
+   refs:['s_double','s_cc','s_migr','s_rev'],
+   top:['You <b>speak marketplace</b> \u2014 supply/demand, take-rate, incrementality \u2014 his native tongue.','Your <b>numbers are real and you own them</b> (P&L, Command Center, the doubling).','The <b>93% rev-share story</b> shows senior judgment and the guts to name a loss.'],
+   deliv:'Tie things back to your exercise \u2014 he\u2019s seen it. Pause before \u201c93%.\u201d Precision over volume; he\u2019ll respect the operator who knows exactly what drove the number.'},
+  {key:'denise', time:'11:00', name:'Denise Reina', role:'Sr Growth Marketing Manager', loc:'New York, NY', priority:false,
+   bg:'At Point since Mar 2025 (~1.5 yrs) on the growth team. Before Point: <b>Sr Manager of Paid Acquisition, Social at SmartAsset</b> (~3.5 yrs) \u2014 fintech lead-gen / advisor-matching, close to your QuinStreet world \u2014 plus 14+ years of freelance <b>paid social</b> growth & acquisition running in parallel (since 2012). 11+ years in digital marketing; two Meta media-buying certifications. SUNY Geneseo. (She/Her.)',
+   means:'Denise is a hands-on <b>paid-social / paid-acquisition practitioner</b> \u2014 exactly one of the \u201cother channel managers\u201d you collaborate with. SmartAsset is fintech lead-gen, so she\u2019ll pick up your lead-quality and marketplace language fast. She\u2019s a peer screening for a good collaborator: your cross-channel / Optimize story (D3) and \u201csame scoreboard\u201d (D1) are pitched right at her \u2014 show you make paid <b>smarter</b>, not that you compete. Low-ego is what wins her.',
+   digs:['How affiliate <b>aligns</b> with broader brand & marketing','Your approach to <b>knowledge-sharing</b> with peers','A time <b>collaboration improved a campaign</b>','Handling <b>ambiguity / overlap</b> in responsibilities'],
+   refs:['a_align','a_know','s_xchan','a_over'],
+   top:['You make paid <b>smarter</b> with the cross-channel view \u2014 you\u2019re an ally, not a rival.','<b>Low-ego collaborator</b> \u2014 share the data, share the credit.','You\u2019ve <b>built shared attribution with paid + data before</b> (OpenStore, story #1) \u2014 collaboration is your normal, not a threat.'],
+   deliv:'Warm, peer-to-peer. She wants a good teammate \u2014 let the collaboration come through, not just the metrics.'},
+  {key:'siarra', time:'11:30', name:'Siarra Ortiz', role:'Senior Associate, Content Marketing', loc:'New York, NY \u00b7 Remote', priority:false,
+   bg:'At Point <b>4+ years</b> \u2014 started as Social Media Coordinator (Apr 2022), now <b>Senior Associate, Content Marketing</b> (since Sep 2024), leading social content strategy and editorial planning aligned to brand goals. Before Point: Marketing Assistant at <b>Newor Media</b> (managed SEO-driven blog content + freelance writers), Social Media Intern at RE/MAX, Marketing Assistant at Nova Interactions. Biochemistry at University of Hartford. Follows the <b>Black Wealth Data Center</b> and the <b>National Association of REALTORS</b>.',
+   means:'Siarra owns Point\u2019s <b>content and brand voice</b> and has been inside the company 4+ years \u2014 she knows it cold and cares about it. She\u2019s junior to you, so warmth and low-ego matter most. Two tells: she\u2019s <b>SEO/content-native</b> (Newor), so your \u201cbrief it, gate it, mine it\u201d (S2) is her exact language; and she just reposted Point\u2019s \u201c25,000 homeowners helped\u201d milestone celebrating the <b>homeowner stories</b> \u2014 she cares about the mission, so connect to <i>who</i> Point helps (equity-rich but underserved homeowners), not just the metrics.',
+   digs:['When you decide to <b>pivot</b>; what signals you look for','How you align <b>messaging & creative</b> with brand tone','A time you and a <b>peer disagreed</b> on a campaign','<b>Qualities</b> you value in teammates'],
+   refs:['a_pivot','s_gate','s_cathy','a_qual'],
+   top:['You <b>gate creative</b> for brand + compliance \u2014 her core concern, answered up front.','You <b>mine top partners</b> (Credit Sesame) for what to test \u2014 respect for content/testing.','<b>Warm and low-ego</b> \u2014 you\u2019re a senior who\u2019s easy to work with.'],
+   deliv:'Friendly, not above-it-all. She cares about the brand she\u2019s helped build and the homeowners Point serves \u2014 show you do too.'},
+  {key:'jesse', time:'12:15', name:'Jesse Martin', role:'Sr Talent Acquisition Partner', loc:'debrief \u00b7 15 min', priority:false,
+   bg:'Recruiter debrief \u2014 15 minutes. Logistics and temperature check, not a story round.',
+   means:'Warmth + fit. Reiterate <b>why this role fits</b> (affiliate ownership + regulated fintech + housing finance), show energy, and ask about timeline / next steps.',
+   digs:['\u201cHow did it go?\u201d / overall fit','Logistics, timeline, next steps'],
+   refs:[],
+   top:['<b>Why this fits:</b> you\u2019ve done this exact job \u2014 affiliate channel ownership in home finance.','Genuine <b>enthusiasm</b> for Point\u2019s trajectory (the securitization / growth).','Keep it <b>concise and warm</b> \u2014 no heavy stories.'],
+   deliv:'Short, upbeat, human. Ask one good question about the process and thank them.'}
+];
+const news = [
+  {date:'Jul 15, 2026', title:'$508.6M securitization \u2014 the biggest HEI deal ever',
+   sum:'Point 2026-2 raised <b>$508.6M</b>, the first HEI securitization to clear $500M in notes, and drove funding costs down <b>220+ bps</b>. Four tranches sold to 30+ institutional investors, including 8 new entrants to the asset class.',
+   use:'Capital just got cheaper and deeper. When financing is the easy part, the constraint becomes <b>origination and lead volume</b> \u2014 which is the affiliate channel\u2019s job. Frame affiliate growth as feeding that engine efficiently.',
+   url:'https://asreport.americanbanker.com/news/point-2026-2-just-delivered-home-equity-investments-biggest-abs', dom:'Asset Securitization Report'},
+  {date:'Mid-2026', title:'Milestone: 25,000+ homeowners, ~$2.5B funded',
+   sum:'Point\u2019s current milestone: <b>25,000+ homeowners</b> helped and <b>~$2.5B in home equity investments</b> funded, growing <b>3\u00d7+ YoY</b> (up from 20,000 / $2B in Dec 2025). Backed by a separate <b>$2.5B capital commitment from Blue Owl</b> in late 2025.',
+   use:'This is the growth mandate behind the hire \u2014 Point is in aggressive scale mode, and affiliate is a lever to hit those acquisition targets efficiently. Bonus: Siarra reposted this exact milestone, so the homeowner-impact angle lands with her.',
+   url:'https://point.com/about', dom:'point.com'},
+  {date:'May 19, 2026', title:'New TPO / wholesale channel (Samuel Bjelac)',
+   sum:'Point launched a <b>third-party origination channel for mortgage brokers</b> and hired <b>Samuel Bjelac</b> as Head of Wholesale \u2014 a new distribution channel beyond its direct-to-consumer and partner model.',
+   use:'Point is actively opening <b>new acquisition surfaces</b>. Affiliate should do the same on the marketing side \u2014 new publishers, creators, placements. It signals you\u2019re aligned with how the company already thinks about growth.',
+   url:'https://www.globenewswire.com/news-release/2026/05/19/3297207/0/en/point-launches-third-party-origination-channel-for-brokers-hires-samuel-bjelac-as-head-of-wholesale.html', dom:'GlobeNewswire'},
+  {date:'Product primer', title:'Know the product & the audience',
+   sum:'The <b>HEI</b> gives a homeowner cash for a share of their home\u2019s future appreciation \u2014 <b>no monthly payments</b>, 30-year term. Qualification is flexible: credit scores as low as <b>500</b>, no income/DTI requirement. CEO Eddie Lim; founded 2015; backed by a16z, Ribbit, Greylock, Blue Owl.',
+   use:'The audience skews <b>equity-rich but credit- or income-constrained</b> (self-employed, retirees, variable income) \u2014 not just the affluent. That shapes which publishers matter: personal-finance, debt, and home-equity comparison sites (NerdWallet, Bankrate, Money.com \u2014 already a partner).',
+   url:'https://point.com', dom:'point.com'}
+];
+const qmap = {
+  ranjeet:[{q:'A unique perspective that changed an outcome',ref:'s_dash'},{q:'What you\u2019re learning to stay ahead',ref:'a_ai'},{q:'Team cohesion, especially remote',ref:'a_coh'},{q:'A strong, collaborative team dynamic',ref:'a_dyn'}],
+  shoji:[{q:'Leveraging Impact/Everflow to drive growth',ref:'s_double'},{q:'Capabilities for scaling / efficiency',ref:'s_cc'},{q:'Complex reporting & timelines across stakeholders',ref:'s_migr'},{q:'An unconventional tactic \u2014 risk vs. opportunity',ref:'s_rev'}],
+  denise:[{q:'Aligning affiliate with broader brand & marketing',ref:'a_align'},{q:'Knowledge-sharing & collaboration with peers',ref:'a_know'},{q:'Collaboration that improved a campaign',ref:'s_xchan'},{q:'Handling ambiguity / overlap',ref:'a_over'}],
+  siarra:[{q:'When to pivot; what signals',ref:'a_pivot'},{q:'Aligning messaging/creative with brand tone',ref:'s_gate'},{q:'A peer disagreement on a campaign',ref:'s_cathy'},{q:'Qualities you value in teammates',ref:'a_qual'}]
+};
+
+const byId={}; stories.forEach(s=>byId[s.id]=s); approaches.forEach(a=>byId[a.id]=a);
+const isStory=ref=>stories.some(s=>s.id===ref);
+
+function ivRefs(refs){
+  if(!refs.length) return '<div class="ivtext" style="color:var(--mute2)">No stories \u2014 warmth + fit only.</div>';
+  return '<div class="schips">'+refs.map(r=>{
+    const a=byId[r]; const st=isStory(r); const title=a.title||a.who; const q=st?'':a.q;
+    return `<button class="schip" data-jump="${r}"><span class="st ${st?'story':'appr'}">${st?'STORY '+a.n:'HOOK'}</span><span class="slabel">${title}${q?`<span class="sq">${q}</span>`:''}</span><span class="go">\u2192</span></button>`;
+  }).join('')+'</div>';
+}
+document.getElementById('ivBody').innerHTML = interviews.map(iv=>`
+  <div class="ivcard ${iv.priority?'priority':''}" data-card>
+    <div class="ivtop" data-toggle>
+      <div class="ivtime">${iv.time}</div>
+      <div class="ivwho">
+        <div class="ivname">${iv.name}${iv.priority?'<span class="prtag">KEY</span>':''}</div>
+        <div class="ivrole">${iv.role}</div>
+        <div class="ivloc">${iv.loc}</div>
+      </div>
+      <div class="chev">\u25B6</div>
+    </div>
+    <div class="ivbody">
+      <div class="ivsec"><div class="ivlbl">Who they are</div><div class="ivtext">${iv.bg}</div></div>
+      <div class="ivsec means"><div class="ivlbl">What it means for you</div><div class="ivtext">${iv.means}</div></div>
+      <div class="ivsec"><div class="ivlbl">What they\u2019ll dig into</div><ul class="digs">${iv.digs.map(d=>`<li>${d}</li>`).join('')}</ul></div>
+      <div class="ivsec"><div class="ivlbl">Your answers for them &mdash; tap to open</div>${ivRefs(iv.refs)}</div>
+      <div class="ivsec inroom"><div class="ivlbl">In the room</div><ol>${iv.top.map(t=>`<li>${t}</li>`).join('')}</ol><div class="deliv">${iv.deliv}</div></div>
+    </div>
+  </div>`).join('');
+
+function storyCard(s){return `<div class="card" id="card_${s.id}" data-card>
+  <div class="ctop" data-toggle><div class="cnum">${s.n}</div>
+    <div class="cmain"><div class="ctitle">${s.title}</div><div class="cproves">${s.proves}</div>
+      <div class="cserves">${s.serves.map(x=>`<span class="svc">${x}</span>`).join('')}</div></div>
+    <div class="chev">\u25B6</div></div>
+  <div class="cbody">
+    <div class="spine"><div class="lbl">Spine \u2014 memorize</div><div class="tx">${s.spine}</div></div>
+    <div class="blk"><div class="lbl">Beats to hit</div><ol class="beats">${s.beats.map(b=>`<li>${b}</li>`).join('')}</ol></div>
+    <div class="bridge"><div class="lbl">Bridge \u2192 Point</div><div class="tx">${s.bridge}</div></div>
+    <div class="notes"><div class="lbl">Practice notes</div><div class="tx">${s.notes}</div></div>
+  </div></div>`;}
+function apprCard(a,i){return `<div class="card appr" id="card_${a.id}" data-card>
+  <div class="ctop" data-toggle><div class="cnum">${i+1}</div>
+    <div class="cmain"><div class="ctitle">${a.who}</div><div class="cproves">${a.q}</div></div>
+    <div class="chev">\u25B6</div></div>
+  <div class="cbody">
+    <div class="hook"><div class="lbl">Hook</div><div class="tx">${a.hook}</div></div>
+    <div class="blk"><div class="lbl">The approach</div><ul class="elems">${a.elements.map(e=>`<li>${e}</li>`).join('')}</ul></div>
+    <div class="proof"><b>Proof:</b> ${a.proof}</div>
+    <div class="bridge"><div class="lbl">Bridge \u2192 Point</div><div class="tx">${a.bridge}</div></div>
+  </div></div>`;}
+document.getElementById('storyBody').innerHTML = stories.map(storyCard).join('');
+document.getElementById('apprBody').innerHTML = approaches.map(apprCard).join('');
+
+document.getElementById('newsBody').innerHTML = news.map(n=>`
+  <div class="ncard"><div class="ndate">${n.date}</div><div class="ntitle">${n.title}</div>
+    <div class="nsum">${n.sum}</div>
+    <div class="nuse"><b>How to use it</b>${n.use}</div>
+    <a class="nlink" href="${n.url}" target="_blank" rel="noopener">${n.dom}</a></div>`).join('');
+
+function showTab(t){
+  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.t===t));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id===t));
+}
+document.getElementById('tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(!b)return;showTab(b.dataset.t);window.scrollTo({top:0,behavior:'smooth'});});
+document.addEventListener('click',e=>{const tog=e.target.closest('[data-toggle]');if(!tog)return;tog.closest('[data-card]').classList.toggle('open');});
+document.addEventListener('click',e=>{
+  const j=e.target.closest('[data-jump]');if(!j)return;const ref=j.dataset.jump;showTab('stories');
+  const el=document.getElementById('card_'+ref);
+  if(el){el.classList.add('open');setTimeout(()=>{el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1300);},60);}
+});
+document.querySelectorAll('.expandall').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const cards=document.querySelectorAll('#'+btn.dataset.scope+' [data-card]');
+    const anyClosed=[...cards].some(c=>!c.classList.contains('open'));
+    cards.forEach(c=>c.classList.toggle('open',anyClosed));
+    btn.textContent=anyClosed?'Collapse all':'Expand all';
+  });
+});
+
+const mockPick=document.getElementById('mockPick'), mockStage=document.getElementById('mockStage');
+let timerInt=null, curSet=[], curItem=null;
+mockPick.innerHTML = interviews.filter(i=>qmap[i.key]).map(i=>`<button class="mp" data-k="${i.key}">${i.name.split(' ')[0]}</button>`).join('')+`<button class="mp" data-k="all">All</button>`;
+mockPick.addEventListener('click',e=>{
+  const b=e.target.closest('.mp');if(!b)return;
+  document.querySelectorAll('.mp').forEach(x=>x.classList.toggle('on',x===b));
+  const k=b.dataset.k;
+  if(k==='all'){curSet=[];Object.keys(qmap).forEach(kk=>{curSet=curSet.concat(qmap[kk].map(q=>({...q,who:kk})));});}
+  else curSet=qmap[k].map(q=>({...q,who:k}));
+  nextMock();
+});
+const nameOf=k=>{const i=interviews.find(x=>x.key===k);return i?i.name.split(' ')[0]:'';};
+function fmt(s){const m=Math.floor(s/60),ss=s%60;return m+':'+(ss<10?'0':'')+ss;}
+function nextMock(){
+  if(timerInt){clearInterval(timerInt);timerInt=null;}
+  if(!curSet.length){mockStage.innerHTML='<div class="empty">No questions in this set.</div>';return;}
+  curItem=curSet[Math.floor(Math.random()*curSet.length)];
+  mockStage.innerHTML=`<div class="mfrom">${nameOf(curItem.who)} asks</div><div class="mq">${curItem.q}</div><div class="timer" id="tmr">1:30</div>
+    <div class="mrow"><button class="mbtn primary" id="revBtn">Reveal answer</button><button class="mbtn" id="nextBtn">Next question</button></div>
+    <div class="reveal" id="rev"></div>`;
+  let t=90; const tel=document.getElementById('tmr');
+  timerInt=setInterval(()=>{t--;tel.textContent=fmt(t);if(t<=20)tel.classList.add('warn');if(t<=0){clearInterval(timerInt);tel.textContent='time';}},1000);
+  document.getElementById('nextBtn').onclick=nextMock;
+  document.getElementById('revBtn').onclick=()=>{
+    const a=byId[curItem.ref], rev=document.getElementById('rev'); rev.classList.add('on');
+    if(isStory(curItem.ref)){
+      rev.innerHTML=`<div class="spine"><div class="lbl">Spine</div><div class="tx">${a.spine}</div></div><div class="blk"><div class="lbl">Beats</div><ol class="beats">${a.beats.map(b=>`<li>${b}</li>`).join('')}</ol></div><div class="bridge"><div class="lbl">Bridge</div><div class="tx">${a.bridge}</div></div>`;
+    }else{
+      rev.innerHTML=`<div class="hook"><div class="lbl">Hook</div><div class="tx">${a.hook}</div></div><div class="blk"><div class="lbl">Approach</div><ul class="elems">${a.elements.map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="bridge"><div class="lbl">Bridge</div><div class="tx">${a.bridge}</div></div>`;
+    }
+  };
+}
+</script>
+</body>
+</html>
